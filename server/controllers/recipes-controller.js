@@ -15,7 +15,9 @@ const recipesList = async (req, res) => {
   }
 };
 
-const recipesListByCategory = async (req, res) => {};
+const recipesListById = async (req, res) => {
+    
+};
 
 module.exports = {
   recipesList,
