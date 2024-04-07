@@ -61,9 +61,64 @@ const createRecipe = async (req, res) => {
   }
 };
 
-const editRecipeById = async (req, res) => {};
+const editRecipeById = async (req, res) => {
+  try {
+    if (!req.params.id) {
+      return res.status(404).json({
+        message: "Please provide the recipeID",
+      });
+    }
+    const { name, image_url, category } = req.body;
 
-const deleteRecipe = async (req, res) => {};
+    // Checking if everything exists
+    if ((!name, !category)) {
+      return res.status(400).json({
+        message: "Please provide all the required fields!",
+      });
+    }
+    if (!image_url) {
+      image_url = "/images/noImage.png";
+    }
+
+    // Update recipe
+    const updatedRecipeId = await knex("recipes")
+      .where({ id: req.params.id })
+      .update({
+        name,
+        category,
+        image_url,
+      });
+
+    // Fetch the updated recipe info
+    const updatedRecipe = await knex("recipes")
+      .where({ id: req.params.id })
+      .first();
+    res.status(200).json(updatedRecipe);
+  } catch (error) {
+    res.status(500).json({
+      message: `Unable to update recipe with ID ${req.params.id}: ${error}!`,
+    });
+  }
+};
+
+const deleteRecipe = async (req, res) => {
+  try {
+    const rowsDeleted = await knex("recipes")
+      .where({ id: req.params.id })
+      .delete();
+
+    if (rowsDeleted === 0) {
+      return res
+        .status(404)
+        .json({ message: `User with ID ${req.params.id} not found` });
+    }
+    res.sendStatus(204);
+  } catch (error) {
+    res.status(500).json({
+      message: `Unable to delete recipe: ${error}`,
+    });
+  }
+};
 
 module.exports = {
   recipesList,
