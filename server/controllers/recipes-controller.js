@@ -35,21 +35,40 @@ const recipeById = async (req, res) => {
 };
 
 const createRecipe = async (req, res) => {
+  try {
+    let { name, image_url, category } = req.body;
+    if (!name || !category) {
+      return res.status(400).json({
+        message: "Please provide all the required fields",
+      });
+    }
+    if (!image_url) {
+      image_url = "/images/noImage.png";
+    }
+    const newRecipeId = await knex("recipes").insert({
+      name,
+      image_url,
+      category,
+    });
+    const newRecipe = await knex("recipes")
+      .where({ id: newRecipeId[0] })
+      .first();
+    res.status(201).json(newRecipe);
+  } catch (error) {
+    res.status(500).json({
+      message: `Unable to create a new recipe: ${error}!`,
+    });
+  }
+};
 
-}
+const editRecipeById = async (req, res) => {};
 
-const editRecipeById = async(req, res) => {
-
-}
-
-const deleteRecipe = async(req, res) => {
-
-}
+const deleteRecipe = async (req, res) => {};
 
 module.exports = {
   recipesList,
   recipeById,
   createRecipe,
   editRecipeById,
-  deleteRecipe
+  deleteRecipe,
 };
