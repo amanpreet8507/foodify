@@ -36,15 +36,19 @@ const recipeById = async (req, res) => {
 
 const createRecipe = async (req, res) => {
   try {
-    let { name, image_url, category } = req.body;
+    let { name, category } = req.body;
+    let image_url = "";
+    if (req.file) {
+      image_url = `/images/${req.file.filename}`;
+    } else {
+      image_url = "images/noImage.png";
+    }
     if (!name || !category) {
       return res.status(400).json({
         message: "Please provide all the required fields",
       });
     }
-    if (!image_url) {
-      image_url = "/images/noImage.png";
-    }
+
     const newRecipeId = await knex("recipes").insert({
       name,
       image_url,
