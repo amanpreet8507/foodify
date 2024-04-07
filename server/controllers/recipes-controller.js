@@ -34,7 +34,22 @@ const recipeById = async (req, res) => {
   }
 };
 
+const createRecipe = async (req, res) => {
+
+}
+
+const editRecipeById = async(req, res) => {
+
+}
+
+const deleteRecipe = async(req, res) => {
+
+}
+
 module.exports = {
   recipesList,
   recipeById,
+  createRecipe,
+  editRecipeById,
+  deleteRecipe
 };
