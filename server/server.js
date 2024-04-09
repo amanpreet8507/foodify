@@ -13,14 +13,16 @@ const PORT = process.env.PORT || 5050;
 // Use routes
 const ingrediantRoutes = require("./routes/ingrediants-route");
 const recipesRoutes = require("./routes/recipes-route");
+const favouriteRecipesRoutes = require("./routes/favourite-route");
 
 app.use("/ingrediants", ingrediantRoutes);
 app.use("/recipes", recipesRoutes);
+app.use("/favouriteRecipes", favouriteRecipesRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.send("Welcome to foodify API");
 });
